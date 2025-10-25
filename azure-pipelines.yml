@@ -1,6 +1,4 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customoze to build and deploy your code
-# Add steps that build, run tests, deploy, and more:
+# Demo spring application
 
 trigger:
  branches:
@@ -10,11 +8,27 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- script: echo Hello, World!
-  displayName: 'Run a one line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo see https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+stages:
+  - stage: 'Junit'
+    displayName: 'Junit Stage'
+    jobs:
+      - job: 'JunitTest'
+        displayName: 'Running unit tests'
+        steps:
+          - script: echo 'Running Spring demo app unit test'
+          - task: Maven@4
+            inputs:
+              azureSubscription: 'Azure subscription 1(6664a209-4f14-4fc3-92d7-597da7d890c4)'
+              mavenPomFile: 'pom.xml'
+              goals: 'test'
+              publishJUnitResults: true
+              testResultsFiles: '**/surefire-reports/TEST-*.xml'
+              allowBrokenSymlinks: false
+              codeCoverageToolOption: 'JaCoCo'
+              javaHomeOption: 'JDKVersion'
+              mavenVersionOption: 'Default'
+              mavenAuthenticateFeed: false
+              effectivePomSkip: false
+              sonarQubeRunAnalysis: false
+              checkStyleRunAnalysis: true
+              pmdRunAnalysis: true
