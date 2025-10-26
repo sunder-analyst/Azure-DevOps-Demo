@@ -1,6 +1,7 @@
 # Demo spring application
 # Testing this after adding new branch
 # Pipeline Condition Test
+# Docker
 
 trigger:
  branches:
@@ -16,11 +17,9 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
-
   - stage: 'BuildArtifact'
     displayName: 'BuildingArtifact'
     condition: and(succeeded(),ne(variables['Build.Reason'],'PullRequest'))
-    dependsOn: 'Junit'
     jobs:
       - job: 'BuildArtifact'
         displayName: 'BuildingArtifact'
