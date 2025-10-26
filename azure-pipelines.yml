@@ -16,29 +16,6 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
-  - stage: 'Junit'
-    displayName: 'Junit Stage'
-    jobs:
-      - job: 'JunitTest'
-        displayName: 'Running unit tests'
-        steps:
-          - script: echo 'Running Spring demo app unit test'
-          - task: Maven@4
-            inputs:
-              azureSubscription: 'Azure subscription 1(6664a209-4f14-4fc3-92d7-597da7d890c4)'
-              mavenPomFile: 'pom.xml'
-              goals: 'test'
-              publishJUnitResults: true
-              testResultsFiles: '**/surefire-reports/TEST-*.xml'
-              allowBrokenSymlinks: false
-              codeCoverageToolOption: 'JaCoCo'
-              javaHomeOption: 'JDKVersion'
-              mavenVersionOption: 'Default'
-              mavenAuthenticateFeed: false
-              effectivePomSkip: false
-              sonarQubeRunAnalysis: false
-              checkStyleRunAnalysis: true
-              pmdRunAnalysis: true
 
   - stage: 'BuildArtifact'
     displayName: 'BuildingArtifact'
@@ -73,3 +50,28 @@ stages:
               PathtoPublish: '$(Build.ArtifactStagingDirectory)'
               ArtifactName: 'drop'
               publishLocation: 'Container'
+
+  - stage: 'Dockerize'
+    displayName: 'Create Docker Image'
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+    jobs:
+      - job: 'CreateDockerImage'
+        displayName: 'Build and Publish Docker Image'
+        steps:
+        - task: DownloadBuildArtifacts@0
+          inputs:
+            buildType: 'current'
+            downloadType: 'single'
+            artifactName: 'drop'
+            downloadPath: '.'
+        - task: CopyFiles@2
+          inputs:
+            SourceFolder: 'drop'
+            Contents: '*jar'
+            TargetFolder: '$(build.artifactstagingdirectory)/s/cicid/drop'
+        - task: Docker@2
+          inputs:
+            containerRegistry: 'AzureDevOpsToken'
+            repository: 'sunderraj/demo-app'
+            command: 'buildAndPush'
+            Dockerfile: '$(build.artifactstagingdirectory)/s/cicid/drop'
