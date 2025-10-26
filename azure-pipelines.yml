@@ -1,6 +1,6 @@
 # Demo spring application
 # Testing this after adding new branch
-# Pipeline Condition Test
+# Pipeline Condition Testing
 
 trigger:
  branches:
