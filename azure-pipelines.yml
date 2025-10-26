@@ -67,10 +67,10 @@ stages:
           inputs:
             SourceFolder: 'drop'
             Contents: '*jar'
-            TargetFolder: '$(build.artifactstagingdirectory)/s/cicid/drop'
+            TargetFolder: '$(build.artifactstagingdirectory)/s/cicd/drop'
         - task: Docker@2
           inputs:
             containerRegistry: 'AzureDevOpsToken'
             repository: 'sunderraj/demo-app'
             command: 'buildAndPush'
-            Dockerfile: '$(build.artifactstagingdirectory)/s/cicid/Dockerfile'
+            Dockerfile: '$(build.artifactstagingdirectory)/s/cicd/Dockerfile'
