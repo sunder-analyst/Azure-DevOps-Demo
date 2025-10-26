@@ -52,7 +52,7 @@ stages:
             inputs:
               azureSubscription: 'Azure subscription 1(6664a209-4f14-4fc3-92d7-597da7d890c4)'
               mavenPomFile: 'pom.xml'
-              goals: 'Clean package'
+              goals: 'clean package'
               options: '--no-transfer-progress'
               publishJUnitResults: true
               testResultsFiles: '**/surefire-reports/TEST-*.xml'
