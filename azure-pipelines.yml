@@ -41,6 +41,8 @@ stages:
 
   - stage: 'BuildArtifact'
     displayName: 'BuildingArtifact'
+    condition: and(succeeded(),ne(variables['Build.Reason'],'PullRequest'))
+    dependsOn: 'Junit'
     jobs:
       - job: 'BuildArtifact'
         displayName: 'BuildingArtifact'
