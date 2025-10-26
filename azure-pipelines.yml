@@ -73,4 +73,4 @@ stages:
             containerRegistry: 'AzureDevOpsToken'
             repository: 'sunderraj/demo-app'
             command: 'buildAndPush'
-            Dockerfile: '$(Build.SourcesDirectory)/cicd/Dockerfile'
+            Dockerfile: '$(build.artifactstagingdirectory)/s/cicd/DockerFile'
