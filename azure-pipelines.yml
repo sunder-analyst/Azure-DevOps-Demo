@@ -74,3 +74,7 @@ stages:
             repository: 'sunderraj/demo-app'
             command: 'buildAndPush'
             Dockerfile: '$(build.artifactstagingdirectory)/s/cicd/drop/cicd/docker/DockerFile'
+            buildContext: '$(Build.ArtifactStagingDirectory)/s/cicd/drop'
+            tags: |
+              latest
+              $(Build.BuildId)
